@@ -14,10 +14,17 @@
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 //buttons pins
-#define BUTTON_RED 7
-#define BUTTON_GREEN 12
-#define BUTTON_BLUE 4
-#define BUTTON_YELLOW 3
+#define BUTTON_YELLOW 7
+#define BUTTON_YELLOW_ORANGE 12
+#define BUTTON_ORANGE 4
+#define BUTTON_RED_ORANGE 3
+#define BUTTON_RED A0
+#define BUTTON_RED_PURPLE A1
+#define BUTTON_PURPLE A2
+#define BUTTON_PURPLE_BLUE A3
+#define BUTTON_BLUE A4
+#define BUTTON_BLUE_GREEN A5
+
 #define BUTTON_BLACK 2
 #define BUTTON_WHITE 1
 #define BUTTON_PLUS 6
@@ -28,8 +35,21 @@ bool newOp = false; //if true the operation go on
 bool startOp = false; //if true you can start an operation
 
 //a kind of associative array
-char colors[] = {'R', 'G', 'B', 'Y', 'N', 'W'}; //color array
-uint16_t colorsCode[] = {0xF800, 0x07E0, 0x001F, 0xFFE0, 0x0000, 0XFFFF}; //RGB565 arrays
+/*
+Y=Yellow
+Q=Yellow orange
+O=Orange
+T=Red Orange
+R=Red
+I=Red purple
+P=Purple
+A=Purple blue
+B=Blue
+G=Blue green
+
+*/
+char colors[] = {'Y', 'Q', 'O', 'T', 'N', 'W', 'R', 'I', 'P', 'A', 'B', 'G'}; //color array
+uint16_t colorsCode[] = {0xF726, 0xF5C3, 0xE4E6, 0xEAA5, 0x0000, 0xFFFF, 0xE1A5, 0xA8C9, 0x79D1, 0x4191, 0x3AF5, 0x0559}; //RGB565 arrays
 
 void setup() {
 
@@ -45,14 +65,21 @@ void setup() {
   tft.println("COLOR CALCULATOR");
 
   //button initialization
-  pinMode(BUTTON_RED, INPUT_PULLUP);
-  pinMode(BUTTON_GREEN, INPUT_PULLUP);
-  pinMode(BUTTON_PLUS, INPUT_PULLUP);
-  pinMode(BUTTON_CANC, INPUT_PULLUP);
-  pinMode(BUTTON_BLUE, INPUT_PULLUP);
   pinMode(BUTTON_YELLOW, INPUT_PULLUP);
+  pinMode(BUTTON_YELLOW_ORANGE, INPUT_PULLUP);
+  pinMode(BUTTON_ORANGE, INPUT_PULLUP);
+  pinMode(BUTTON_RED_ORANGE, INPUT_PULLUP);
+  pinMode(BUTTON_RED, INPUT_PULLUP);
+  pinMode(BUTTON_RED_PURPLE, INPUT_PULLUP);
+  pinMode(BUTTON_PURPLE, INPUT_PULLUP);
+  pinMode(BUTTON_PURPLE_BLUE, INPUT_PULLUP);
+  pinMode(BUTTON_BLUE, INPUT_PULLUP);
+  pinMode(BUTTON_BLUE_GREEN, INPUT_PULLUP);
   pinMode(BUTTON_BLACK, INPUT_PULLUP);
   pinMode(BUTTON_WHITE, INPUT_PULLUP);
+
+  pinMode(BUTTON_CANC, INPUT_PULLUP);
+  pinMode(BUTTON_PLUS, INPUT_PULLUP);
 
   delay(4000);
 
@@ -64,22 +91,34 @@ void setup() {
 void loop() {
 
   //maybe a bit spaghetti but i have a limited amount of buttons
-  if(digitalRead(BUTTON_RED) == LOW){
-    handle('R');
-  }else if(digitalRead(BUTTON_GREEN) == LOW){
-    handle('G');
+  if(digitalRead(BUTTON_YELLOW) == LOW){
+    handle('Y');
+  }else if(digitalRead(BUTTON_YELLOW_ORANGE) == LOW){
+    handle('Q');
   }else if(digitalRead(BUTTON_PLUS) == LOW){
     handle('+');
   }else if(digitalRead(BUTTON_CANC) == LOW){
     handle('C');
-  }else if(digitalRead(BUTTON_BLUE) == LOW){
-    handle('B');
-  }else if(digitalRead(BUTTON_YELLOW) == LOW){
-    handle('Y');
+  }else if(digitalRead(BUTTON_ORANGE) == LOW){
+    handle('O');
+  }else if(digitalRead(BUTTON_RED_ORANGE) == LOW){
+    handle('T');
   }else if(digitalRead(BUTTON_BLACK) == LOW){
     handle('N');
   }else if(digitalRead(BUTTON_WHITE) == LOW){
     handle('W');
+  }else if(digitalRead(BUTTON_RED)==LOW){
+    handle('R');
+  }else if(digitalRead(BUTTON_RED_PURPLE)==LOW){
+    handle('I');
+  }else if(digitalRead(BUTTON_PURPLE)==LOW){
+    handle('P');
+  }else if(digitalRead(BUTTON_PURPLE_BLUE)==LOW){
+    handle('A');
+  }else if(digitalRead(BUTTON_BLUE)==LOW){
+    handle('B');
+  }else if(digitalRead(BUTTON_BLUE_GREEN)==LOW){
+    handle('G');
   }
 
   delay(200);
@@ -122,7 +161,7 @@ uint16_t blend_rgb565(uint16_t a, uint16_t b)
 void handle(char key){
   if(isInThere(key, colors)){
     //search for the color in the associative array
-    for(int i=0; i<6; i++){
+    for(int i=0; i<12; i++){
       //if it's the first color
       if(key == colors[i] && newOp == false){
         //we can continue with the operation now
@@ -166,7 +205,7 @@ void handle(char key){
 bool isInThere(char needle, char haystack[]){
   bool result=false;
 
-  for(int i=0; i<6; i++){
+  for(int i=0; i<12; i++){
     if(needle == haystack[i]){
       result=true;
     }
