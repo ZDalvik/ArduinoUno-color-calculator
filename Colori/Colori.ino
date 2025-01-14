@@ -89,7 +89,7 @@ void setup() {
 
   delay(4000);
 
-  tft.drawBitmap(0,0,logo, 80, 100, ST7735_CYAN);
+  tft.drawBitmap(62,80,logo, 129, 161, ST7735_WHITE);
 
   delay(50000);
 
