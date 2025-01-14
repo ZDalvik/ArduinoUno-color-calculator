@@ -3,7 +3,6 @@
 #include <Adafruit_ST7735.h> 
 #include <Adafruit_ST7789.h> 
 #include <stdint.h>
-#include "logo.h"
 
 #define MAKE_RGB565(r, g, b) ((r << 11) | (g << 5) | (b))
 
@@ -85,13 +84,10 @@ void setup() {
   delay(4000);
 
   //prints a message
-  printInit("inserisci colore");
+  printInit("HEX");
 
   delay(4000);
 
-  tft.drawBitmap(62,80,logo, 129, 161, ST7735_WHITE);
-
-  delay(50000);
 
 }
 
@@ -136,7 +132,7 @@ void printInit(String b){
       tft.fillScreen(ST77XX_BLACK);
 
       tft.setTextColor(ST77XX_WHITE);
-      tft.setCursor(1,0);
+      tft.setCursor(62,80);
       tft.println(b);
 }
 
@@ -197,7 +193,7 @@ void handle(char key){
     //reset the colors
     col1=col2=0xFFFF;
     //reset everything
-    printInit("inserisci colore");
+    printInit("HEX");
     newOp=false;
     startOp=false;
     delay(1000);
