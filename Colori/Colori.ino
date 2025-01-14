@@ -3,6 +3,7 @@
 #include <Adafruit_ST7735.h> 
 #include <Adafruit_ST7789.h> 
 #include <stdint.h>
+#include "logo.h"
 
 #define MAKE_RGB565(r, g, b) ((r << 11) | (g << 5) | (b))
 
@@ -49,7 +50,7 @@ G=Blue green
 
 */
 char colors[] = {'Y', 'Q', 'O', 'T', 'N', 'W', 'R', 'I', 'P', 'A', 'B', 'G'}; //color array
-uint16_t colorsCode[] = {0xF726, 0xF5C3, 0xE4E6, 0xEAA5, 0x0000, 0xFFFF, 0xE1A5, 0xA8C9, 0x79D1, 0x4191, 0x3AF5, 0x0559}; //RGB565 arrays
+uint16_t colorsCode[] = {0xF726, 0xF5C3, 0xE4E6, 0xEAA5, 0x75EB, 0xD70A, 0xE1A5, 0xA8C9, 0x79D1, 0x4191, 0x3AF5, 0x0559}; //RGB565 arrays
 
 void setup() {
 
@@ -85,6 +86,12 @@ void setup() {
 
   //prints a message
   printInit("inserisci colore");
+
+  delay(4000);
+
+  tft.drawBitmap(0,0,logo, 80, 100, ST7735_CYAN);
+
+  delay(50000);
 
 }
 
